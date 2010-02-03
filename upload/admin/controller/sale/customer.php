@@ -400,7 +400,9 @@ class ControllerSaleCustomer extends Controller {
 		
 		$this->data['sort'] = $sort;
 		$this->data['order'] = $order;
-		
+
+		$this->data['token'] = $this->request->get['token'];
+
 		$this->template = 'sale/customer_list.tpl';
 		$this->children = array(
 			'common/header',	

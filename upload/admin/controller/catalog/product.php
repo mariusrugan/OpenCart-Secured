@@ -402,6 +402,8 @@ class ControllerCatalogProduct extends Controller {
 		$this->data['sort'] = $sort;
 		$this->data['order'] = $order;
 
+		$this->data['token'] = $this->request->get['token'];
+
 		$this->template = 'catalog/product_list.tpl';
 		$this->children = array(
 			'common/header',	

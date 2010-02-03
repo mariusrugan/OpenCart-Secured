@@ -1,4 +1,5 @@
 <?php
+define('ADMIN', true);
 // Configuration
 require_once('config.php');
 

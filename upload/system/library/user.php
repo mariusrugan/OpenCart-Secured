@@ -8,18 +8,18 @@ final class User {
 		$this->db = Registry::get('db');
 		$this->request = Registry::get('request');
 		$this->session = Registry::get('session');
-		
-    	if (isset($this->session->data['user_id'])) {
+
+    	if (isset($this->session->data['user_id']) && isset($this->request->get['token']) && $this->request->get['token'] == $this->session->data['authToken'] ) {
 			$user_query = $this->db->query("SELECT * FROM " . DB_PREFIX . "user WHERE user_id = '" . (int)$this->session->data['user_id'] . "'");
-			
+
 			if ($user_query->num_rows) {
 				$this->user_id = $user_query->row['user_id'];
 				$this->username = $user_query->row['username'];
-				
+
       			$this->db->query("UPDATE " . DB_PREFIX . "user SET ip = '" . $this->db->escape($this->request->server['REMOTE_ADDR']) . "' WHERE user_id = '" . (int)$this->session->data['user_id'] . "'");
 
       			$user_group_query = $this->db->query("SELECT permission FROM " . DB_PREFIX . "user_group WHERE user_group_id = '" . (int)$user_query->row['user_group_id'] . "'");
-				
+
 	  			foreach (unserialize($user_group_query->row['permission']) as $key => $value) {
 	    			$this->permission[$key] = $value;
 	  			}
@@ -28,22 +28,24 @@ final class User {
 			}
     	}
   	}
-		
+
   	public function login($username, $password) {
     	$user_query = $this->db->query("SELECT * FROM " . DB_PREFIX . "user WHERE username = '" . $this->db->escape($username) . "' AND password = '" . $this->db->escape(md5($password)) . "'");
 
     	if ($user_query->num_rows) {
 			$this->session->data['user_id'] = $user_query->row['user_id'];
-			
+
 			$this->user_id = $user_query->row['user_id'];
-			$this->username = $user_query->row['username'];			
+			$this->username = $user_query->row['username'];
 
       		$user_group_query = $this->db->query("SELECT permission FROM " . DB_PREFIX . "user_group WHERE user_group_id = '" . (int)$user_query->row['user_group_id'] . "'");
 
 	  		foreach (unserialize($user_group_query->row['permission']) as $key => $value) {
 	    		$this->permissions[$key] = $value;
 	  		}
-		
+
+			$this->genToken();
+
       		return TRUE;
     	} else {
       		return FALSE;
@@ -52,7 +54,7 @@ final class User {
 
   	public function logout() {
 		unset($this->session->data['user_id']);
-	
+
 		$this->user_id = '';
 		$this->username = '';
   	}
@@ -64,17 +66,27 @@ final class User {
 	  		return FALSE;
 		}
   	}
-  
+
   	public function isLogged() {
     	return $this->user_id;
   	}
-  
+
   	public function getId() {
     	return $this->user_id;
   	}
-	
+
   	public function getUserName() {
     	return $this->username;
-  	}	
+  	}
+
+	private function genToken($length = 16)
+	{
+		$token = substr(md5(uniqid(rand(), true)), 0, $length);
+
+		$session = Registry::get('session');
+		$request = Registry::get('request');
+		$session->data['authToken'] = $token;
+		$request->get['token']		= $token;
+	}
 }
 ?>
