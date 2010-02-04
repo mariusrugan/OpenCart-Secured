@@ -7,7 +7,7 @@ final class Action {
 	public function __construct($route, $args = array()) {
 		$path = '';
 		
-		$parts = explode('/', str_replace('../', '', $route));
+		$parts = explode('/', str_replace('../', '', str_replace('..\\', '', $route)));
 		
 		foreach ($parts as $part) { 
 			$path .= $part;
