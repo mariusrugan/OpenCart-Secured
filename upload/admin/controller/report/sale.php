@@ -171,6 +171,8 @@ class ControllerReportSale extends Controller {
 		$this->data['filter_date_end'] = $filter_date_end;		
 		$this->data['filter_group'] = $filter_group;
 		$this->data['filter_order_status_id'] = $filter_order_status_id;
+
+		$this->data['token'] = $this->request->get['token'];
 		 
 		$this->template = 'report/sale.tpl';
 		$this->children = array(

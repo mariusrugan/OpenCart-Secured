@@ -92,7 +92,7 @@
 </div>
 <script type="text/javascript"><!--
 function filter() {
-	url = 'index.php?route=sale/customer';
+	url = 'index.php?token=<?php echo $token; ?>&route=sale/customer';
 	
 	var filter_name = $('input[name=\'filter_name\']').attr('value');
 	

@@ -99,7 +99,7 @@
     <div class="pagination"><?php echo $pagination; ?></div>
     <script type="text/javascript"><!--
 function filter() {
-	url = 'index.php?route=catalog/product';
+	url = 'index.php?token=<?php echo $token; ?>&route=catalog/product';
 	
 	var filter_name = $('input[name=\'filter_name\']').attr('value');
 	
