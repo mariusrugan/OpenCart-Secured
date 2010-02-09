@@ -104,7 +104,7 @@ function getProducts() {
 	$('#product option').remove();
 	
 	$.ajax({
-		url: 'index.php?route=catalog/review/category&category_id=' + $('#category').attr('value'),
+		url: 'index.php?token=<?php echo $this->request->get['token']; ?>&route=catalog/review/category&category_id=' + $('#category').attr('value'),
 		dataType: 'json',
 		success: function(data) {
 			for (i = 0; i < data.length; i++) {

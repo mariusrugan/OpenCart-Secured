@@ -17,7 +17,7 @@ CKEDITOR.editorConfig = function( config )
 
 	// config.uiColor = '#AADC6E';
 
-	config.filebrowserBrowseUrl = 'index.php?route=common/filemanager';
+	config.filebrowserBrowseUrl = 'index.php?token=route=common/filemanager';
 	config.filebrowserImageBrowseUrl = 'index.php?route=common/filemanager';
 	config.filebrowserFlashBrowseUrl = 'index.php?route=common/filemanager';
 	config.filebrowserUploadUrl = 'index.php?route=common/filemanager';

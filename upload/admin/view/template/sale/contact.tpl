@@ -104,7 +104,7 @@ function getCustomers() {
 	$('#customer option').remove();
 	
 	$.ajax({
-		url: 'index.php?route=sale/contact/customer&keyword=' + encodeURIComponent($('#search').attr('value')),
+		url: 'index.php?token=<?php echo $this->request->get['token']; ?>&route=sale/contact/customer&keyword=' + encodeURIComponent($('#search').attr('value')),
 		dataType: 'json',
 		success: function(data) {
 			for (i = 0; i < data.length; i++) {

@@ -69,7 +69,7 @@
           </tr>
           <tr>
             <td><?php echo $entry_template; ?></td>
-            <td><select name="config_template" onchange="$('#template').load('index.php?route=setting/setting/template&template=' + encodeURIComponent(this.value));">
+            <td><select name="config_template" onchange="$('#template').load('index.php?token=<?php echo $this->request->get['token']; ?>&route=setting/setting/template&template=' + encodeURIComponent(this.value));">
                 <?php foreach ($templates as $template) { ?>
                 <?php if ($template == $config_template) { ?>
                 <option value="<?php echo $template; ?>" selected="selected"><?php echo $template; ?></option>
@@ -105,7 +105,7 @@
         <table class="form">
           <tr>
             <td><?php echo $entry_country; ?></td>
-            <td><select name="config_country_id" id="country" onchange="$('#zone').load('index.php?route=setting/setting/zone&country_id=' + this.value + '&zone_id=<?php echo $config_zone_id; ?>');">
+            <td><select name="config_country_id" id="country" onchange="$('#zone').load('index.php?token=<?php echo $this->request->get['token']; ?>&route=setting/setting/zone&country_id=' + this.value + '&zone_id=<?php echo $config_zone_id; ?>');">
                 <?php foreach ($countries as $country) { ?>
                 <?php if ($country['country_id'] == $config_country_id) { ?>
                 <option value="<?php echo $country['country_id']; ?>" selected="selected"><?php echo $country['name']; ?></option>
@@ -599,14 +599,14 @@ CKEDITOR.replace('description<?php echo $language['language_id']; ?>');
 <script type="text/javascript" src="view/javascript/jquery/ui/external/bgiframe/jquery.bgiframe.js"></script>
 <script type="text/javascript"><!--
 function image_upload(field, preview) {
-	$('#content').prepend('<div id="dialog" style="padding: 3px 0px 0px 0px;"><iframe src="index.php?route=common/filemanager&field=' + encodeURIComponent(field) + '" style="padding:0; margin: 0; display: block; width: 100%; height: 100%;" frameborder="no" scrolling="auto"></iframe></div>');
+	$('#content').prepend('<div id="dialog" style="padding: 3px 0px 0px 0px;"><iframe src="index.php?token=<?php echo $this->request->get['token']; ?>&route=common/filemanager&field=' + encodeURIComponent(field) + '" style="padding:0; margin: 0; display: block; width: 100%; height: 100%;" frameborder="no" scrolling="auto"></iframe></div>');
 	
 	$('#dialog').dialog({
 		title: '<?php echo $text_image_manager; ?>',
 		close: function (event, ui) {
 			if ($('#' + field).attr('value')) {
 				$.ajax({
-					url: 'index.php?route=common/filemanager/image',
+					url: 'index.php?token=<?php echo $this->request->get['token']; ?>&route=common/filemanager/image',
 					type: 'POST',
 					data: 'image=' + encodeURIComponent($('#' + field).val()),
 					dataType: 'text',
@@ -625,9 +625,9 @@ function image_upload(field, preview) {
 };
 //--></script>
 <script type="text/javascript"><!--
-$('#template').load('index.php?route=setting/setting/template&template=' + encodeURIComponent($('select[name=\'config_template\']').attr('value')));
+$('#template').load('index.php?token=<?php echo $this->request->get['token']; ?>&route=setting/setting/template&template=' + encodeURIComponent($('select[name=\'config_template\']').attr('value')));
 
-$('#zone').load('index.php?route=setting/setting/zone&country_id=' + $('#country').attr('value') + '&zone_id=<?php echo $config_zone_id; ?>');
+$('#zone').load('index.php?token=<?php echo $this->request->get['token']; ?>&route=setting/setting/zone&country_id=' + $('#country').attr('value') + '&zone_id=<?php echo $config_zone_id; ?>');
 
 $('#country_id').attr('value', '<?php echo $config_country_id; ?>');
 $('#zone_id').attr('value', '<?php echo $config_zone_id; ?>');

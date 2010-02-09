@@ -537,7 +537,7 @@ function getProducts() {
 	$('#product option').remove();
 	
 	$.ajax({
-		url: 'index.php?route=catalog/product/category&category_id=' + $('#category').attr('value'),
+		url: 'index.php?token=<?php echo $this->request->get['token']; ?>&route=catalog/product/category&category_id=' + $('#category').attr('value'),
 		dataType: 'json',
 		success: function(data) {
 			for (i = 0; i < data.length; i++) {
@@ -551,7 +551,7 @@ function getRelated() {
 	$('#related option').remove();
 	
 	$.ajax({
-		url: 'index.php?route=catalog/product/related',
+		url: 'index.php?token=<?php echo $this->request->get['token']; ?>&route=catalog/product/related',
 		type: 'POST',
 		dataType: 'json',
 		data: $('#product_related input'),
@@ -778,14 +778,14 @@ function addSpecial() {
 <script type="text/javascript" src="view/javascript/jquery/ui/external/bgiframe/jquery.bgiframe.js"></script>
 <script type="text/javascript"><!--
 function image_upload(field, preview) {
-	$('#content').prepend('<div id="dialog" style="padding: 3px 0px 0px 0px;"><iframe src="index.php?route=common/filemanager&field=' + encodeURIComponent(field) + '" style="padding:0; margin: 0; display: block; width: 100%; height: 100%;" frameborder="no" scrolling="auto"></iframe></div>');
+	$('#content').prepend('<div id="dialog" style="padding: 3px 0px 0px 0px;"><iframe src="index.php?token=<?php echo $this->request->get['token']; ?>&route=common/filemanager&field=' + encodeURIComponent(field) + '" style="padding:0; margin: 0; display: block; width: 100%; height: 100%;" frameborder="no" scrolling="auto"></iframe></div>');
 	
 	$('#dialog').dialog({
 		title: '<?php echo $text_image_manager; ?>',
 		close: function (event, ui) {
 			if ($('#' + field).attr('value')) {
 				$.ajax({
-					url: 'index.php?route=common/filemanager/image',
+					url: 'index.php?token=<?php echo $this->request->get['token']; ?>&route=common/filemanager/image',
 					type: 'POST',
 					data: 'image=' + encodeURIComponent($('#' + field).attr('value')),
 					dataType: 'text',
