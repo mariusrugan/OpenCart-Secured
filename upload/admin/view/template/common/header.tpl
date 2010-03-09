@@ -99,7 +99,7 @@
     <li id="help"><a class="top"><?php echo $text_help; ?></a>
       <ul>
         <li><a onclick="window.open('http://www.opencart.com');"><?php echo $text_opencart; ?></a></li>
-        <li><a onclick="window.open('http://www.opencart.com/index.php?route=documentation/introduction');"><?php echo $text_documentation; ?></a></li>
+        <li><a onclick="window.open('http://www.opencart.com/index.php?token=<?php echo $this->request->get['token']; ?>&route=documentation/introduction');"><?php echo $text_documentation; ?></a></li>
         <li><a onclick="window.open('http://forum.opencart.com');"><?php echo $text_support; ?></a></li>
       </ul>
     </li>

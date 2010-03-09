@@ -11,3 +11,12 @@ RewriteBase /
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)\?*$ index.php?_route_=$1 [L,QSA]
+
+# Restrict access to the .tpl files so a user cannot download the the source code of the template files
+
+Options All -Indexes
+
+<FilesMatch "\.(htaccess|htpasswd|ini|log|tpl)$">
+ Order Allow,Deny
+ Deny from all
+</FilesMatch>

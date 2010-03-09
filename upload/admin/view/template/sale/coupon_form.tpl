@@ -180,7 +180,7 @@ function getProducts() {
 	$('#product option').remove();
 	
 	$.ajax({
-		url: 'index.php?route=sale/coupon/category&category_id=' + $('#category').attr('value'),
+		url: 'index.php?token=<?php echo $this->request->get['token']; ?>&route=sale/coupon/category&category_id=' + $('#category').attr('value'),
 		dataType: 'json',
 		success: function(data) {
 			for (i = 0; i < data.length; i++) {
@@ -194,7 +194,7 @@ function getProduct() {
 	$('#coupon option').remove();
 	
 	$.ajax({
-		url: 'index.php?route=sale/coupon/product',
+		url: 'index.php?token=<?php echo $this->request->get['token']; ?>&route=sale/coupon/product',
 		type: 'POST',
 		dataType: 'json',
 		data: $('#coupon_product input'),
