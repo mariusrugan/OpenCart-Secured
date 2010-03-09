@@ -1,17 +1,22 @@
 <?php
 abstract class Controller {
+	protected $registry;
 	protected $id;
 	protected $template;
 	protected $children = array();
 	protected $data = array();
 	protected $output;
 
+	public function __construct($registry) {
+		$this->registry = $registry;
+	}
+
 	public function __get($key) {
-		return Registry::get($key);
+		return $this->registry->get($key);
 	}
 
 	public function __set($key, $value) {
-		Registry::set($key, $value);
+		$this->registry->set($key, $value);
 	}
 
 	protected function forward($route, $args = array()) {
@@ -19,19 +24,7 @@ abstract class Controller {
 	}
 
 	protected function redirect($url) {
-		header('Location: ' . str_replace('&amp;', '&', $url));
-		exit();
-	}
-
-	protected function parentRedirect($url) {
-		echo "<html>\n";
-		echo "<body>\n";
-		echo "<script type='text/javascript'>\n";
-		echo "parent.location = '" . str_replace('&amp;', '&', $url) . "';\n";
-		echo "</script>\n";
-		echo "<p>You are currently being redirected. If you are not redirected in 5 seconds then <a href=\"" . $url . "\" target=\"_parent\">please click here</a>.</p>\n";
-		echo "</body>\n";
-		echo "</html>";
+		header('Location: ' . $url);
 		exit();
 	}
 
@@ -43,7 +36,7 @@ abstract class Controller {
 			if (file_exists($file)) {
 				require_once($file);
 
-				$controller = new $class();
+				$controller = new $class($this->registry);
 
 				$controller->index();
 
