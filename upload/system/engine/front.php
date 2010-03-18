@@ -1,13 +1,8 @@
 <?php
 final class Front {
-	protected $registry;
 	protected $pre_action = array();
 	protected $error;
-	
-	public function __construct($registry) {
-		$this->registry = $registry;
-	}
-	
+
 	public function addPreAction($pre_action) {
 		$this->pre_action[] = $pre_action;
 	}
@@ -41,7 +36,7 @@ final class Front {
 		if (file_exists($file)) {
 			require_once($file);
 
-			$controller = new $class($this->registry);
+			$controller = new $class();
 			
 			if (is_callable(array($controller, $method))) {
 				$action = call_user_func_array(array($controller, $method), $args);

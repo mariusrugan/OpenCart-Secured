@@ -51,7 +51,7 @@ class ControllerCatalogDownload extends Controller {
 				$url .= '&order=' . $this->request->get['order'];
 			}
 			
-			$this->redirect(HTTPS_SERVER . 'index.php?route=catalog/download' . $url);
+			$this->redirect($this->url->https('catalog/download' . $url));
 		}
 	
     	$this->getForm();
@@ -96,7 +96,7 @@ class ControllerCatalogDownload extends Controller {
 				$url .= '&order=' . $this->request->get['order'];
 			}
 			
-			$this->redirect(HTTPS_SERVER . 'index.php?route=catalog/download' . $url);
+			$this->redirect($this->url->https('catalog/download' . $url));
 		}
 		
     	$this->getForm();
@@ -130,7 +130,7 @@ class ControllerCatalogDownload extends Controller {
 				$url .= '&order=' . $this->request->get['order'];
 			}
 			
-			$this->redirect(HTTPS_SERVER . 'index.php?route=catalog/download' . $url);
+			$this->redirect($this->url->https('catalog/download' . $url));
     	}
 
     	$this->getList();
@@ -172,19 +172,19 @@ class ControllerCatalogDownload extends Controller {
   		$this->document->breadcrumbs = array();
 
    		$this->document->breadcrumbs[] = array(
-       		'href'      => HTTPS_SERVER . 'index.php?route=common/home',
+       		'href'      => $this->url->https('common/home'),
        		'text'      => $this->language->get('text_home'),
       		'separator' => FALSE
    		);
 
    		$this->document->breadcrumbs[] = array(
-       		'href'      => HTTPS_SERVER . 'index.php?route=catalog/download' . $url,
+       		'href'      => $this->url->https('catalog/download' . $url),
        		'text'      => $this->language->get('heading_title'),
       		'separator' => ' :: '
    		);
 							
-		$this->data['insert'] = HTTPS_SERVER . 'index.php?route=catalog/download/insert' . $url;
-		$this->data['delete'] = HTTPS_SERVER . 'index.php?route=catalog/download/delete' . $url;	
+		$this->data['insert'] = $this->url->https('catalog/download/insert' . $url);
+		$this->data['delete'] = $this->url->https('catalog/download/delete' . $url);	
 
 		$this->data['downloads'] = array();
 
@@ -204,7 +204,7 @@ class ControllerCatalogDownload extends Controller {
 						
 			$action[] = array(
 				'text' => $this->language->get('text_edit'),
-				'href' => HTTPS_SERVER . 'index.php?route=catalog/download/update&download_id=' . $result['download_id'] . $url
+				'href' => $this->url->https('catalog/download/update&download_id=' . $result['download_id'] . $url)
 			);
 						
 			$this->data['downloads'][] = array(
@@ -253,8 +253,8 @@ class ControllerCatalogDownload extends Controller {
 			$url .= '&page=' . $this->request->get['page'];
 		}
 		
-		$this->data['sort_name'] = HTTPS_SERVER . 'index.php?route=catalog/download&sort=dd.name' . $url;
-		$this->data['sort_remaining'] = HTTPS_SERVER . 'index.php?route=catalog/download&sort=d.remaining' . $url;
+		$this->data['sort_name'] = $this->url->https('catalog/download&sort=dd.name' . $url);
+		$this->data['sort_remaining'] = $this->url->https('catalog/download&sort=d.remaining' . $url);
 		
 		$url = '';
 
@@ -271,7 +271,7 @@ class ControllerCatalogDownload extends Controller {
 		$pagination->page = $page;
 		$pagination->limit = 10; 
 		$pagination->text = $this->language->get('text_pagination');
-		$pagination->url = HTTPS_SERVER . 'index.php?route=catalog/download' . $url . '&page={page}';
+		$pagination->url = $this->url->https('catalog/download' . $url . '&page=%s');
 
 		$this->data['pagination'] = $pagination->render();
 
@@ -318,13 +318,13 @@ class ControllerCatalogDownload extends Controller {
   		$this->document->breadcrumbs = array();
 
    		$this->document->breadcrumbs[] = array(
-       		'href'      => HTTPS_SERVER . 'index.php?route=common/home',
+       		'href'      => $this->url->https('common/home'),
        		'text'      => $this->language->get('text_home'),
       		'separator' => FALSE
    		);
 
    		$this->document->breadcrumbs[] = array(
-       		'href'      => HTTPS_SERVER . 'index.php?route=catalog/download',
+       		'href'      => $this->url->https('catalog/download'),
        		'text'      => $this->language->get('heading_title'),
       		'separator' => ' :: '
    		);
@@ -344,12 +344,12 @@ class ControllerCatalogDownload extends Controller {
 		}
 							
 		if (!isset($this->request->get['download_id'])) {
-			$this->data['action'] = HTTPS_SERVER . 'index.php?route=catalog/download/insert' . $url;
+			$this->data['action'] = $this->url->https('catalog/download/insert' . $url);
 		} else {
-			$this->data['action'] = HTTPS_SERVER . 'index.php?route=catalog/download/update&download_id=' . $this->request->get['download_id'] . $url;
+			$this->data['action'] = $this->url->https('catalog/download/update&download_id=' . $this->request->get['download_id'] . $url);
 		}
 		
-		$this->data['cancel'] = HTTPS_SERVER . 'index.php?route=catalog/download' . $url;
+		$this->data['cancel'] = $this->url->https('catalog/download' . $url);
  		
 		$this->load->model('localisation/language');
 		

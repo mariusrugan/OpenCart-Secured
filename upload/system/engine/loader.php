@@ -1,17 +1,11 @@
 <?php
 final class Loader {
-	protected $registry;
-	
-	public function __construct($registry) {
-		$this->registry = $registry;
-	}
-	
 	public function __get($key) {
-		return $this->registry->get($key);
+		return Registry::get($key);
 	}
 
 	public function __set($key, $value) {
-		$this->registry->set($key, $value);
+		Registry::set($key, $value);
 	}
 	
 	public function library($library) {
@@ -31,7 +25,7 @@ final class Loader {
 		if (file_exists($file)) {
 			include_once($file);
 			
-			$this->registry->set('model_' . str_replace('/', '_', $model), new $class($this->registry));
+			Registry::set('model_' . str_replace('/', '_', $model), new $class());
 		} else {
 			exit('Error: Could not load model ' . $model . '!');
 		}
@@ -44,7 +38,7 @@ final class Loader {
 		if (file_exists($file)) {
 			include_once($file);
 			
-			$this->registry->set(str_replace('/', '_', $driver), new $class());
+			Registry::set(str_replace('/', '_', $driver), new $class());
 		} else {
 			exit('Error: Could not load database ' . $driver . '!'); 
 		}

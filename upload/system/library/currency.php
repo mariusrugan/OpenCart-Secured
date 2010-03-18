@@ -3,12 +3,12 @@ final class Currency {
   	private $code;
   	private $currencies = array();
   
-  	public function __construct($registry) {
-		$this->config = $registry->get('config');
-		$this->db = $registry->get('db');
-		$this->language = $registry->get('language');
-		$this->request = $registry->get('request');
-		$this->session = $registry->get('session');
+  	public function __construct() {
+		$this->config = Registry::get('config');
+		$this->db = Registry::get('db');
+		$this->language = Registry::get('language');
+		$this->request = Registry::get('request');
+		$this->session = Registry::get('session');
 		
 		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "currency");
 
@@ -96,20 +96,10 @@ final class Currency {
     	return $string;
   	}
 	
-  	public function convert($value, $from, $to) {
-		if (isset($this->currencies[$from])) {
-			$from = $this->currencies[$from]['value'];
-		} else {
-			$from = 0;
-		}
+  	public function convert($number, $from, $to) {
+		$value = $this->currency->getValue($from) / $this->currency->getValue($to);
 		
-		if (isset($this->currencies[$to])) {
-			$to = $this->currencies[$to]['value'];
-		} else {
-			$to = 0;
-		}		
-		
-		return $value * ($to / $from);
+		return $number * $value;
   	}
 	
   	public function getId() {
@@ -121,11 +111,7 @@ final class Currency {
   	}
   
   	public function getValue($currency) {
-		if (isset($this->currencies[$currency])) {
-			return $this->currencies[$currency]['value'];
-		} else {
-			return 0;
-		}
+    	return (isset($this->currencies[$currency]) ? $this->currencies[$currency]['value'] : NULL);
   	}
     
   	public function has($currency) {

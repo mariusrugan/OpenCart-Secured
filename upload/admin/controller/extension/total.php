@@ -8,13 +8,13 @@ class ControllerExtensionTotal extends Controller {
    		$this->document->breadcrumbs = array();
 
    		$this->document->breadcrumbs[] = array(
-       		'href'      => HTTPS_SERVER . 'index.php?route=common/home',
+       		'href'      => $this->url->https('common/home'),
        		'text'      => $this->language->get('text_home'),
       		'separator' => FALSE
    		);
 
    		$this->document->breadcrumbs[] = array(
-       		'href'      => HTTPS_SERVER . 'index.php?route=extension/total',
+       		'href'      => $this->url->https('extension/total'),
        		'text'      => $this->language->get('heading_title'),
       		'separator' => ' :: '
    		);
@@ -63,17 +63,17 @@ class ControllerExtensionTotal extends Controller {
 				if (!in_array($extension, $extensions)) {
 					$action[] = array(
 						'text' => $this->language->get('text_install'),
-						'href' => HTTPS_SERVER . 'index.php?route=extension/total/install&extension=' . $extension
+						'href' => $this->url->https('extension/total/install&extension=' . $extension)
 					);
 				} else {
 					$action[] = array(
 						'text' => $this->language->get('text_edit'),
-						'href' => HTTPS_SERVER . 'index.php?route=total/' . $extension
+						'href' => $this->url->https('total/' . $extension)
 					);
 								
 					$action[] = array(
 						'text' => $this->language->get('text_uninstall'),
-						'href' => HTTPS_SERVER . 'index.php?route=extension/total/uninstall&extension=' . $extension
+						'href' => $this->url->https('extension/total/uninstall&extension=' . $extension)
 					);
 				}
 										
@@ -99,7 +99,7 @@ class ControllerExtensionTotal extends Controller {
 		if (!$this->user->hasPermission('modify', 'extension/total')) {
 			$this->session['error'] = $this->language->get('error_permission'); 
 			
-			$this->redirect(HTTPS_SERVER . 'index.php?route=extension/total');
+			$this->redirect($this->url->https('extension/total'));
 		} else {				
 			$this->load->model('setting/extension');
 		
@@ -110,7 +110,7 @@ class ControllerExtensionTotal extends Controller {
 			$this->model_user_user_group->addPermission($this->user->getId(), 'access', 'total/' . $this->request->get['extension']);
 			$this->model_user_user_group->addPermission($this->user->getId(), 'modify', 'total/' . $this->request->get['extension']);
 
-			$this->redirect(HTTPS_SERVER . 'index.php?route=extension/total');
+			$this->redirect($this->url->https('extension/total'));
 		}
 	}
 	
@@ -118,7 +118,7 @@ class ControllerExtensionTotal extends Controller {
 		if (!$this->user->hasPermission('modify', 'extension/total')) {
 			$this->session['error'] = $this->language->get('error_permission'); 
 			
-			$this->redirect(HTTPS_SERVER . 'index.php?route=extension/total');
+			$this->redirect($this->url->https('extension/total'));
 		} else {			
 			$this->load->model('setting/extension');
 			$this->load->model('setting/setting');
@@ -127,7 +127,7 @@ class ControllerExtensionTotal extends Controller {
 		
 			$this->model_setting_setting->deleteSetting($this->request->get['extension']);
 		
-			$this->redirect(HTTPS_SERVER . 'index.php?route=extension/total');
+			$this->redirect($this->url->https('extension/total'));
 		}
 	}	
 }

@@ -8,19 +8,19 @@ class ControllerAccountSuccess extends Controller {
 		$this->document->breadcrumbs = array();
 
       	$this->document->breadcrumbs[] = array(
-        	'href'      => HTTP_SERVER . 'index.php?route=common/home',
+        	'href'      => $this->url->http('common/home'),
         	'text'      => $this->language->get('text_home'),
         	'separator' => FALSE
       	); 
 
       	$this->document->breadcrumbs[] = array(
-        	'href'      => HTTP_SERVER . 'index.php?route=account/account',
+        	'href'      => $this->url->http('account/account'),
         	'text'      => $this->language->get('text_account'),
         	'separator' => $this->language->get('text_separator')
       	);
 
       	$this->document->breadcrumbs[] = array(
-        	'href'      => HTTP_SERVER . 'index.php?route=account/success',
+        	'href'      => $this->url->http('account/success'),
         	'text'      => $this->language->get('text_success'),
         	'separator' => $this->language->get('text_separator')
       	);
@@ -28,17 +28,17 @@ class ControllerAccountSuccess extends Controller {
     	$this->data['heading_title'] = $this->language->get('heading_title');
 
 		if (!$this->config->get('config_customer_approval')) {
-    		$this->data['text_message'] = sprintf($this->language->get('text_message'), HTTP_SERVER . 'index.php?route=information/contact');
+    		$this->data['text_message'] = sprintf($this->language->get('text_message'), $this->url->http('information/contact'));
 		} else {
-			$this->data['text_message'] = sprintf($this->language->get('text_approval'), $this->config->get('config_name'), HTTP_SERVER . 'index.php?route=information/contact');
+			$this->data['text_message'] = sprintf($this->language->get('text_approval'), $this->config->get('config_store'), $this->url->http('information/contact'));
 		}
 		
     	$this->data['button_continue'] = $this->language->get('button_continue');
 		
 		if ($this->cart->hasProducts()) {
-			$this->data['continue'] = HTTP_SERVER . 'index.php?route=checkout/cart';
+			$this->data['continue'] = $this->url->http('checkout/cart');
 		} else {
-			$this->data['continue'] = HTTP_SERVER . 'index.php?route=account/account';
+			$this->data['continue'] = $this->url->http('account/account');
 		}
 		
 		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/common/success.tpl')) {

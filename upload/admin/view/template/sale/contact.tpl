@@ -16,18 +16,6 @@
     <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form">
       <table class="form">
         <tr>
-          <td><?php echo $entry_store; ?></td>
-          <td><select name="store_id">
-              <?php foreach ($stores as $store) { ?>
-              <?php if ($store['store_id'] == $store_id) { ?>
-              <option value="<?php echo $store['store_id']; ?>"><?php echo $store['name']; ?></option>
-              <?php } else { ?>
-              <option value="<?php echo $store['store_id']; ?>"><?php echo $store['name']; ?></option>
-              <?php } ?>
-              <?php } ?>
-            </select></td>
-        </tr>
-        <tr>
           <td><?php echo $entry_to; ?></td>
           <td><select name="group">
               <option value=""></option>
@@ -47,8 +35,8 @@
           <td></td>
           <td><table width="100%">
               <tr>
-                <td style="padding: 0;" colspan="3"><input type="text" id="search" value="" style="margin-bottom: 5px;" />
-                  <a onclick="getCustomers();" style="margin-bottom: 5px;" class="button"><span><?php echo $text_search; ?></span></a></td>
+                <td style="padding: 0;" colspan="3"><input id="search" value="" style="margin-bottom: 5px;" />
+                  <input type="button" value="<?php echo $text_search; ?>" onclick="getCustomers();" style="margin-bottom: 5px;" /></td>
               </tr>
               <tr>
                 <td width="49%" style="padding: 0;"><select multiple="multiple" id="customer" size="10" style="width: 100%; margin-bottom: 3px;">
@@ -116,7 +104,7 @@ function getCustomers() {
 	$('#customer option').remove();
 	
 	$.ajax({
-		url: 'index.php?token=<?php echo $this->request->get['token']; ?>&route=sale/contact/customers&keyword=' + encodeURIComponent($('#search').attr('value')),
+		url: 'index.php?token=<?php echo $this->request->get['token']; ?>&route=sale/contact/customer&keyword=' + encodeURIComponent($('#search').attr('value')),
 		dataType: 'json',
 		success: function(data) {
 			for (i = 0; i < data.length; i++) {

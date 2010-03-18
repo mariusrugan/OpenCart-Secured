@@ -37,7 +37,6 @@ class ModelSaleCoupon extends Model {
 	public function deleteCoupon($coupon_id) {
       	$this->db->query("DELETE FROM " . DB_PREFIX . "coupon WHERE coupon_id = '" . (int)$coupon_id . "'");
       	$this->db->query("DELETE FROM " . DB_PREFIX . "coupon_description WHERE coupon_id = '" . (int)$coupon_id . "'");
-		$this->db->query("DELETE FROM " . DB_PREFIX . "coupon_product WHERE coupon_id = '" . (int)$coupon_id . "'");		
 	}
 	
 	public function getCoupon($coupon_id) {

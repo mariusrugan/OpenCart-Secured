@@ -8,13 +8,13 @@ class ControllerExtensionPayment extends Controller {
   		$this->document->breadcrumbs = array();
 
    		$this->document->breadcrumbs[] = array(
-       		'href'      => HTTPS_SERVER . 'index.php?route=common/home',
+       		'href'      => $this->url->https('common/home'),
        		'text'      => $this->language->get('text_home'),
       		'separator' => FALSE
    		);
 
    		$this->document->breadcrumbs[] = array(
-       		'href'      => HTTPS_SERVER . 'index.php?route=extension/payment',
+       		'href'      => $this->url->https('extension/payment'),
        		'text'      => $this->language->get('heading_title'),
       		'separator' => ' :: '
    		);
@@ -63,17 +63,17 @@ class ControllerExtensionPayment extends Controller {
 				if (!in_array($extension, $extensions)) {
 					$action[] = array(
 						'text' => $this->language->get('text_install'),
-						'href' => HTTPS_SERVER . 'index.php?route=extension/payment/install&extension=' . $extension
+						'href' => $this->url->https('extension/payment/install&extension=' . $extension)
 					);
 				} else {
 					$action[] = array(
 						'text' => $this->language->get('text_edit'),
-						'href' => HTTPS_SERVER . 'index.php?route=payment/' . $extension
+						'href' => $this->url->https('payment/' . $extension)
 					);
 								
 					$action[] = array(
 						'text' => $this->language->get('text_uninstall'),
-						'href' => HTTPS_SERVER . 'index.php?route=extension/payment/uninstall&extension=' . $extension
+						'href' => $this->url->https('extension/payment/uninstall&extension=' . $extension)
 					);
 				}
 				
@@ -108,7 +108,7 @@ class ControllerExtensionPayment extends Controller {
 		if (!$this->user->hasPermission('modify', 'extension/payment')) {
 			$this->session['error'] = $this->language->get('error_permission'); 
 			
-			$this->redirect(HTTPS_SERVER . 'index.php?route=extension/payment');
+			$this->redirect($this->url->https('extension/payment'));
 		} else {
 			$this->load->model('setting/extension');
 		
@@ -119,7 +119,7 @@ class ControllerExtensionPayment extends Controller {
 			$this->model_user_user_group->addPermission($this->user->getId(), 'access', 'payment/' . $this->request->get['extension']);
 			$this->model_user_user_group->addPermission($this->user->getId(), 'modify', 'payment/' . $this->request->get['extension']);
 
-			$this->redirect(HTTPS_SERVER . 'index.php?route=extension/payment');
+			$this->redirect($this->url->https('extension/payment'));
 		}
 	}
 	
@@ -127,7 +127,7 @@ class ControllerExtensionPayment extends Controller {
 		if (!$this->user->hasPermission('modify', 'extension/payment')) {
 			$this->session['error'] = $this->language->get('error_permission'); 
 			
-			$this->redirect(HTTPS_SERVER . 'index.php?route=extension/payment');
+			$this->redirect($this->url->https('extension/payment'));
 		} else {		
 			$this->load->model('setting/extension');
 			$this->load->model('setting/setting');
@@ -136,7 +136,7 @@ class ControllerExtensionPayment extends Controller {
 		
 			$this->model_setting_setting->deleteSetting($this->request->get['extension']);
 		
-			$this->redirect(HTTPS_SERVER . 'index.php?route=extension/payment');	
+			$this->redirect($this->url->https('extension/payment'));	
 		}			
 	}
 }
