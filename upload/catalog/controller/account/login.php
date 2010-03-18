@@ -4,7 +4,7 @@ class ControllerAccountLogin extends Controller {
 	
 	public function index() {
 		if ($this->customer->isLogged()) {  
-      		$this->redirect(HTTPS_SERVER . 'index.php?route=account/account');
+      		$this->redirect($this->url->https('account/account'));
     	}
 	
     	$this->language->load('account/login');
@@ -16,11 +16,11 @@ class ControllerAccountLogin extends Controller {
 				$this->session->data['account'] = $this->request->post['account'];
 				
 				if ($this->request->post['account'] == 'register') {
-					$this->redirect(HTTPS_SERVER . 'index.php?route=account/create');
+					$this->redirect($this->url->https('account/create'));
 				}
 				
 				if ($this->request->post['account'] == 'guest') {
-					$this->redirect(HTTPS_SERVER . 'index.php?route=checkout/guest_step_1');
+					$this->redirect($this->url->https('checkout/guest_step_1'));
 				}
 			}
 			
@@ -30,7 +30,7 @@ class ControllerAccountLogin extends Controller {
 				if (isset($this->request->post['redirect'])) {
 					$this->redirect($this->request->post['redirect']);
 				} else {
-					$this->redirect(HTTPS_SERVER . 'index.php?route=account/account');
+					$this->redirect($this->url->https('account/account'));
 				} 
 			}
     	}  
@@ -38,19 +38,19 @@ class ControllerAccountLogin extends Controller {
       	$this->document->breadcrumbs = array();
 
       	$this->document->breadcrumbs[] = array(
-        	'href'      => HTTP_SERVER . 'index.php?route=common/home',
+        	'href'      => $this->url->http('common/home'),
         	'text'      => $this->language->get('text_home'),
         	'separator' => FALSE
       	);
  
       	$this->document->breadcrumbs[] = array(
-        	'href'      => HTTP_SERVER . 'index.php?route=account/account',
+        	'href'      => $this->url->http('account/account'),
         	'text'      => $this->language->get('text_account'),
         	'separator' => $this->language->get('text_separator')
       	);
 		
       	$this->document->breadcrumbs[] = array(
-        	'href'      => HTTP_SERVER . 'index.php?route=account/login',
+        	'href'      => $this->url->http('account/login'),
         	'text'      => $this->language->get('text_login'),
         	'separator' => $this->language->get('text_separator')
       	);
@@ -80,7 +80,7 @@ class ControllerAccountLogin extends Controller {
 			$this->data['error'] = '';
 		}
 		
-		$this->data['action'] = HTTPS_SERVER . 'index.php?route=account/login';
+		$this->data['action'] = $this->url->https('account/login');
 
     	if (isset($this->request->post['redirect'])) {
 			$this->data['redirect'] = $this->request->post['redirect'];
@@ -106,7 +106,7 @@ class ControllerAccountLogin extends Controller {
 			$this->data['account'] = 'register';
 		}
 		
-    	$this->data['forgotten'] = HTTPS_SERVER . 'index.php?route=account/forgotten';
+    	$this->data['forgotten'] = $this->url->https('account/forgotten');
 		$this->data['guest_checkout'] = ($this->config->get('config_guest_checkout') && $this->cart->hasProducts() && !$this->cart->hasDownload());
 
 		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/account/login.tpl')) {

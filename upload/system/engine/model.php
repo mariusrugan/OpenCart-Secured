@@ -1,17 +1,11 @@
 <?php
 abstract class Model {
-	protected $registry;
-	
-	public function __construct($registry) {
-		$this->registry = $registry;
-	}
-	
 	public function __get($key) {
-		return $this->registry->get($key);
+		return Registry::get($key);
 	}
 	
 	public function __set($key, $value) {
-		$this->registry->set($key, $value);
+		Registry::set($key, $value);
 	}
 }
 ?>

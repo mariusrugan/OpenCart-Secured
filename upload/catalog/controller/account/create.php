@@ -4,7 +4,7 @@ class ControllerAccountCreate extends Controller {
 	      
   	public function index() {
 		if ($this->customer->isLogged()) {
-	  		$this->redirect(HTTPS_SERVER . 'index.php?route=account/account');
+	  		$this->redirect($this->url->https('account/account'));
     	}
 
     	$this->language->load('account/create');
@@ -22,9 +22,9 @@ class ControllerAccountCreate extends Controller {
 			
 			$this->language->load('mail/account_create');
 			
-			$subject = sprintf($this->language->get('text_subject'), $this->config->get('config_name'));
+			$subject = sprintf($this->language->get('text_subject'), $this->config->get('config_store'));
 			
-			$message = sprintf($this->language->get('text_welcome'), $this->config->get('config_name')) . "\n\n";
+			$message = sprintf($this->language->get('text_welcome'), $this->config->get('config_store')) . "\n\n";
 			
 			if (!$this->config->get('config_customer_approval')) {
 				$message .= $this->language->get('text_login') . "\n";
@@ -32,44 +32,38 @@ class ControllerAccountCreate extends Controller {
 				$message .= $this->language->get('text_approval') . "\n";
 			}
 			
-			$message .= HTTPS_SERVER . 'index.php?route=account/login' . "\n\n";
+			$message .= $this->url->https('account/login') . "\n\n";
 			$message .= $this->language->get('text_services') . "\n\n";
 			$message .= $this->language->get('text_thanks') . "\n";
-			$message .= $this->config->get('config_name');
+			$message .= $this->config->get('config_store');
 			
-			$mail = new Mail();
-			$mail->protocol = $this->config->get('config_mail_protocol');
-			$mail->hostname = $this->config->get('config_smtp_host');
-			$mail->username = $this->config->get('config_smtp_username');
-			$mail->password = $this->config->get('config_smtp_password');
-			$mail->port = $this->config->get('config_smtp_port');
-			$mail->timeout = $this->config->get('config_smtp_timeout');				
+			$mail = new Mail($this->config->get('config_mail_protocol'), $this->config->get('config_smtp_host'), $this->config->get('config_smtp_username'), html_entity_decode($this->config->get('config_smtp_password')), $this->config->get('config_smtp_port'), $this->config->get('config_smtp_timeout'));
 			$mail->setTo($this->request->post['email']);
 	  		$mail->setFrom($this->config->get('config_email'));
-	  		$mail->setSender($this->config->get('config_name'));
+	  		$mail->setSender($this->config->get('config_store'));
 	  		$mail->setSubject($subject);
-			$mail->setText(html_entity_decode($message, ENT_QUOTES, 'UTF-8'));
+			$mail->setText($message);
       		$mail->send();
 	  	  
-	  		$this->redirect(HTTPS_SERVER . 'index.php?route=account/success');
+	  		$this->redirect($this->url->https('account/success'));
     	} 
 
       	$this->document->breadcrumbs = array();
 
       	$this->document->breadcrumbs[] = array(
-        	'href'      => HTTP_SERVER . 'index.php?route=common/home',
+        	'href'      => $this->url->http('common/home'),
         	'text'      => $this->language->get('text_home'),
         	'separator' => FALSE
       	); 
 
       	$this->document->breadcrumbs[] = array(
-        	'href'      => HTTP_SERVER . 'index.php?route=account/account',
+        	'href'      => $this->url->http('account/account'),
         	'text'      => $this->language->get('text_account'),
         	'separator' => $this->language->get('text_separator')
       	);
 		
       	$this->document->breadcrumbs[] = array(
-        	'href'      => HTTP_SERVER . 'index.php?route=account/create',
+        	'href'      => $this->url->http('account/create'),
         	'text'      => $this->language->get('text_create'),
         	'separator' => $this->language->get('text_separator')
       	);
@@ -79,7 +73,7 @@ class ControllerAccountCreate extends Controller {
 		$this->data['text_yes'] = $this->language->get('text_yes');
 		$this->data['text_no'] = $this->language->get('text_no');
 		$this->data['text_select'] = $this->language->get('text_select');
-    	$this->data['text_account_already'] = sprintf($this->language->get('text_account_already'), HTTPS_SERVER . 'index.php?route=account/login');
+    	$this->data['text_account_already'] = sprintf($this->language->get('text_account_already'), $this->url->https('account/login'));
     	$this->data['text_your_details'] = $this->language->get('text_your_details');
     	$this->data['text_your_address'] = $this->language->get('text_your_address');
     	$this->data['text_your_password'] = $this->language->get('text_your_password');
@@ -169,7 +163,7 @@ class ControllerAccountCreate extends Controller {
 			$this->data['error_zone'] = '';
 		}
 		
-    	$this->data['action'] = HTTPS_SERVER . 'index.php?route=account/create';
+    	$this->data['action'] = $this->url->https('account/create');
 
 		if (isset($this->request->post['firstname'])) {
     		$this->data['firstname'] = $this->request->post['firstname'];
@@ -265,13 +259,13 @@ class ControllerAccountCreate extends Controller {
 			$this->data['newsletter'] = '';
 		}	
 
-		if ($this->config->get('config_account_id')) {
+		if ($this->config->get('config_account')) {
 			$this->load->model('catalog/information');
 			
-			$information_info = $this->model_catalog_information->getInformation($this->config->get('config_account_id'));
+			$information_info = $this->model_catalog_information->getInformation($this->config->get('config_account'));
 			
 			if ($information_info) {
-				$this->data['text_agree'] = sprintf($this->language->get('text_agree'), HTTP_SERVER . 'index.php?route=information/information&information_id=' . $this->config->get('config_account_id'), $information_info['title']);
+				$this->data['text_agree'] = sprintf($this->language->get('text_agree'), $this->url->http('information/information&information_id=' . $this->config->get('config_account')), $information_info['title']);
 			} else {
 				$this->data['text_agree'] = '';
 			}
@@ -348,10 +342,10 @@ class ControllerAccountCreate extends Controller {
       		$this->error['confirm'] = $this->language->get('error_confirm');
     	}
 		
-		if ($this->config->get('config_account_id')) {
+		if ($this->config->get('config_account')) {
 			$this->load->model('catalog/information');
 			
-			$information_info = $this->model_catalog_information->getInformation($this->config->get('config_account_id'));
+			$information_info = $this->model_catalog_information->getInformation($this->config->get('config_account'));
 			
 			if ($information_info) {
     			if (!isset($this->request->post['agree'])) {

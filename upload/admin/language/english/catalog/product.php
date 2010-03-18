@@ -6,7 +6,6 @@ $_['heading_title']          = 'Products';
 $_['text_success']           = 'Success: You have modified products!';
 $_['text_plus']              = '+';
 $_['text_minus']             = '-';
-$_['text_default']           = 'Default Store';
 $_['text_image_manager']     = 'Image Manager';
 
 // Column
@@ -19,10 +18,9 @@ $_['column_action']          = 'Action';
 
 // Entry
 $_['entry_name']             = 'Product Name:';
+$_['entry_keyword']          = 'SEO Keyword:';
 $_['entry_meta_description'] = 'Meta Tag Description:';
 $_['entry_description']      = 'Description:';
-$_['entry_store']            = 'Stores:';
-$_['entry_keyword']          = 'SEO Keyword:';
 $_['entry_model']            = 'Model:';
 $_['entry_sku']              = 'SKU:';
 $_['entry_location']         = 'Location:';
@@ -37,7 +35,7 @@ $_['entry_price']            = 'Price:';
 $_['entry_subtract']         = 'Subtract Stock:';
 $_['entry_weight_class']     = 'Weight Class:';
 $_['entry_weight']           = 'Weight:';
-$_['entry_length']           = 'Length Class:';
+$_['entry_measurement']      = 'Measurement Class:';
 $_['entry_dimension']        = 'Dimensions (L x W x H):';
 $_['entry_image']            = 'Image:';
 $_['entry_customer_group']   = 'Customer Group:';

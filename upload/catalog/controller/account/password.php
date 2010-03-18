@@ -4,9 +4,9 @@ class ControllerAccountPassword extends Controller {
 	     
   	public function index() {	
     	if (!$this->customer->isLogged()) {
-      		$this->session->data['redirect'] = HTTPS_SERVER . 'index.php?route=account/password';
+      		$this->session->data['redirect'] = $this->url->https('account/password');
 
-      		$this->redirect(HTTPS_SERVER . 'index.php?route=account/login');
+      		$this->redirect($this->url->https('account/login'));
     	}
 
 		$this->language->load('account/password');
@@ -20,25 +20,25 @@ class ControllerAccountPassword extends Controller {
  
       		$this->session->data['success'] = $this->language->get('text_success');
 	  
-	  		$this->redirect(HTTPS_SERVER . 'index.php?route=account/account');
+	  		$this->redirect($this->url->https('account/account'));
     	}
 
       	$this->document->breadcrumbs = array();
 
       	$this->document->breadcrumbs[] = array(
-        	'href'      => HTTP_SERVER . 'index.php?route=common/home',
+        	'href'      => $this->url->http('common/home'),
         	'text'      => $this->language->get('text_home'),
         	'separator' => FALSE
       	); 
 
       	$this->document->breadcrumbs[] = array(
-        	'href'      => HTTP_SERVER . 'index.php?route=account/account',
+        	'href'      => $this->url->http('account/account'),
         	'text'      => $this->language->get('text_account'),
         	'separator' => $this->language->get('text_separator')
       	);
 		
       	$this->document->breadcrumbs[] = array(
-        	'href'      => HTTP_SERVER . 'index.php?route=account/password',
+        	'href'      => $this->url->http('account/password'),
         	'text'      => $this->language->get('heading_title'),
         	'separator' => $this->language->get('text_separator')
       	);
@@ -65,7 +65,7 @@ class ControllerAccountPassword extends Controller {
 			$this->data['error_confirm'] = '';
 		}
 	
-    	$this->data['action'] = HTTPS_SERVER . 'index.php?route=account/password';
+    	$this->data['action'] = $this->url->https('account/password');
 		
 		if (isset($this->request->post['password'])) {
     		$this->data['password'] = $this->request->post['password'];
@@ -79,7 +79,7 @@ class ControllerAccountPassword extends Controller {
 			$this->data['confirm'] = '';
 		}
 
-    	$this->data['back'] = HTTPS_SERVER . 'index.php?route=account/account';
+    	$this->data['back'] = $this->url->https('account/account');
 
 		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/account/password.tpl')) {
 			$this->template = $this->config->get('config_template') . '/template/account/password.tpl';

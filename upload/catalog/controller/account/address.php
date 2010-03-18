@@ -4,9 +4,9 @@ class ControllerAccountAddress extends Controller {
 	  
   	public function index() {
     	if (!$this->customer->isLogged()) {
-	  		$this->session->data['redirect'] = HTTPS_SERVER . 'index.php?route=account/address';
+	  		$this->session->data['redirect'] = $this->url->https('account/address');
 
-	  		$this->redirect(HTTPS_SERVER . 'index.php?route=account/login'); 
+	  		$this->redirect($this->url->https('account/login')); 
     	}
 	
     	$this->language->load('account/address');
@@ -20,9 +20,9 @@ class ControllerAccountAddress extends Controller {
 
   	public function insert() {
     	if (!$this->customer->isLogged()) {
-	  		$this->session->data['redirect'] = HTTPS_SERVER . 'index.php?route=account/address';
+	  		$this->session->data['redirect'] = $this->url->https('account/address');
 
-	  		$this->redirect(HTTPS_SERVER . 'index.php?route=account/login'); 
+	  		$this->redirect($this->url->https('account/login')); 
     	} 
 
     	$this->language->load('account/address');
@@ -36,7 +36,7 @@ class ControllerAccountAddress extends Controller {
 			
       		$this->session->data['success'] = $this->language->get('text_insert');
 
-	  		$this->redirect(HTTPS_SERVER . 'index.php?route=account/address');
+	  		$this->redirect($this->url->https('account/address'));
     	} 
 	  	
 		$this->getForm();
@@ -44,9 +44,9 @@ class ControllerAccountAddress extends Controller {
 
   	public function update() {
     	if (!$this->customer->isLogged()) {
-	  		$this->session->data['redirect'] = HTTPS_SERVER . 'index.php?route=account/address';
+	  		$this->session->data['redirect'] = $this->url->https('account/address');
 
-	  		$this->redirect(HTTPS_SERVER . 'index.php?route=account/login'); 
+	  		$this->redirect($this->url->https('account/login')); 
     	} 
 		
     	$this->language->load('account/address');
@@ -72,7 +72,7 @@ class ControllerAccountAddress extends Controller {
 			
 			$this->session->data['success'] = $this->language->get('text_update');
 	  
-	  		$this->redirect(HTTPS_SERVER . 'index.php?route=account/address');
+	  		$this->redirect($this->url->https('account/address'));
     	} 
 	  	
 		$this->getForm();
@@ -80,9 +80,9 @@ class ControllerAccountAddress extends Controller {
 
   	public function delete() {
     	if (!$this->customer->isLogged()) {
-	  		$this->session->data['redirect'] = HTTPS_SERVER . 'index.php?route=account/address';
+	  		$this->session->data['redirect'] = $this->url->https('account/address');
 
-	  		$this->redirect(HTTPS_SERVER . 'index.php?route=account/login'); 
+	  		$this->redirect($this->url->https('account/login')); 
     	} 
 			
     	$this->language->load('account/address');
@@ -94,13 +94,13 @@ class ControllerAccountAddress extends Controller {
     	if (isset($this->request->get['address_id']) && $this->validateDelete()) {
 			$this->model_account_address->deleteAddress($this->request->get['address_id']);	
 
-			if (isset($this->session->data['shipping_address_id']) && ($this->request->get['address_id'] == $this->session->data['shipping_address_id'])) {
+			if ($this->request->get['address_id'] == $this->session->data['shipping_address_id']) {
 	  			unset($this->session->data['shipping_address_id']);
 				unset($this->session->data['shipping_methods']);
 				unset($this->session->data['shipping_method']);	
 			}
 
-			if (isset($this->session->data['payment_address_id']) && ($this->request->get['address_id'] == $this->session->data['payment_address_id'])) {
+			if ($this->request->get['address_id'] == $this->session->data['payment_address_id']) {
 	  			unset($this->session->data['payment_address_id']);
 				unset($this->session->data['payment_methods']);
 				unset($this->session->data['payment_method']);				
@@ -108,7 +108,7 @@ class ControllerAccountAddress extends Controller {
 			
 			$this->session->data['success'] = $this->language->get('text_delete');
 	  
-	  		$this->redirect(HTTPS_SERVER . 'index.php?route=account/address');
+	  		$this->redirect($this->url->https('account/address'));
     	}
 	
 		$this->getList();	
@@ -116,19 +116,19 @@ class ControllerAccountAddress extends Controller {
 
   	private function getList() {
       	$this->document->breadcrumbs[] = array(
-        	'href'      => HTTP_SERVER . 'index.php?route=common/home',
+        	'href'      => $this->url->http('common/home'),
         	'text'      => $this->language->get('text_home'),
         	'separator' => FALSE
       	); 
 
       	$this->document->breadcrumbs[] = array(
-        	'href'      => HTTP_SERVER . 'index.php?route=account/account',
+        	'href'      => $this->url->http('account/account'),
         	'text'      => $this->language->get('text_account'),
         	'separator' => $this->language->get('text_separator')
       	);
 
       	$this->document->breadcrumbs[] = array(
-        	'href'      => HTTP_SERVER . 'index.php?route=account/address',
+        	'href'      => $this->url->http('account/address'),
         	'text'      => $this->language->get('heading_title'),
         	'separator' => $this->language->get('text_separator')
       	);
@@ -176,7 +176,6 @@ class ControllerAccountAddress extends Controller {
      			'{city}',
       			'{postcode}',
       			'{zone}',
-				'{zone_code}',
       			'{country}'
 			);
 	
@@ -189,20 +188,19 @@ class ControllerAccountAddress extends Controller {
       			'city'      => $result['city'],
       			'postcode'  => $result['postcode'],
       			'zone'      => $result['zone'],
-				'zone_code' => $result['zone_code'],
       			'country'   => $result['country']  
 			);
 
       		$this->data['addresses'][] = array(
         		'address_id' => $result['address_id'],
         		'address'    => str_replace(array("\r\n", "\r", "\n"), '<br />', preg_replace(array("/\s\s+/", "/\r\r+/", "/\n\n+/"), '<br />', trim(str_replace($find, $replace, $format)))),
-        		'update'     => HTTPS_SERVER . 'index.php?route=account/address/update&address_id=' . $result['address_id'],
-				'delete'     => HTTPS_SERVER . 'index.php?route=account/address/delete&address_id=' . $result['address_id']
+        		'update'     => $this->url->https('account/address/update&address_id=' . $result['address_id']),
+				'delete'     => $this->url->https('account/address/delete&address_id=' . $result['address_id'])
       		);
     	}
 
-    	$this->data['insert'] = HTTPS_SERVER . 'index.php?route=account/address/insert';
-		$this->data['back'] = HTTPS_SERVER . 'index.php?route=account/account';
+    	$this->data['insert'] = $this->url->https('account/address/insert');
+		$this->data['back'] = $this->url->https('account/account');
 		
 		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/account/addresses.tpl')) {
 			$this->template = $this->config->get('config_template') . '/template/account/addresses.tpl';
@@ -224,32 +222,32 @@ class ControllerAccountAddress extends Controller {
       	$this->document->breadcrumbs = array();
 
       	$this->document->breadcrumbs[] = array(
-        	'href'      => HTTP_SERVER . 'index.php?route=common/home',
+        	'href'      => $this->url->http('common/home'),
         	'text'      => $this->language->get('text_home'),
         	'separator' => FALSE
       	); 
 
       	$this->document->breadcrumbs[] = array(
-        	'href'      => HTTP_SERVER . 'index.php?route=account/account',
+        	'href'      => $this->url->http('account/account'),
         	'text'      => $this->language->get('text_account'),
         	'separator' => $this->language->get('text_separator')
       	);
 
       	$this->document->breadcrumbs[] = array(
-        	'href'      => HTTP_SERVER . 'index.php?route=account/address',
+        	'href'      => $this->url->http('account/address'),
         	'text'      => $this->language->get('heading_title'),
         	'separator' => $this->language->get('text_separator')
       	);
 		
 		if (!isset($this->request->get['address_id'])) {
       		$this->document->breadcrumbs[] = array(
-        		'href'      => HTTP_SERVER . 'index.php?route=account/address/insert',
+        		'href'      => $this->url->http('account/address/insert'),
         		'text'      => $this->language->get('text_edit_address'),
         		'separator' => $this->language->get('text_separator')
       		);
 		} else {
       		$this->document->breadcrumbs[] = array(
-        		'href'      => HTTP_SERVER . 'index.php?route=account/address/update&address_id=' . $this->request->get['address_id'],
+        		'href'      => $this->url->http('account/address/update&address_id=' . $this->request->get['address_id']),
         		'text'      => $this->language->get('text_edit_address'),
         		'separator' => $this->language->get('text_separator')
       		);
@@ -313,9 +311,9 @@ class ControllerAccountAddress extends Controller {
 		}
 		
 		if (!isset($this->request->get['address_id'])) {
-    		$this->data['action'] = HTTPS_SERVER . 'index.php?route=account/address/insert';
+    		$this->data['action'] = $this->url->https('account/address/insert');
 		} else {
-    		$this->data['action'] = HTTPS_SERVER . 'index.php?route=account/address/update&address_id=' . $this->request->get['address_id'];
+    		$this->data['action'] = $this->url->https('account/address/update&address_id=' . $this->request->get['address_id']);
 		}
 		
     	if (isset($this->request->get['address_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
@@ -406,7 +404,7 @@ class ControllerAccountAddress extends Controller {
 			$this->data['default'] = FALSE;
 		}
 
-    	$this->data['back'] = HTTPS_SERVER . 'index.php?route=account/address';
+    	$this->data['back'] = $this->url->https('account/address');
 		
 		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/account/address.tpl')) {
 			$this->template = $this->config->get('config_template') . '/template/account/address.tpl';

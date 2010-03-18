@@ -1,22 +1,17 @@
 <?php
 abstract class Controller {
-	protected $registry;	
 	protected $id;
 	protected $template;
 	protected $children = array();
 	protected $data = array();
 	protected $output;
 	
-	public function __construct($registry) {
-		$this->registry = $registry;
-	}
-	
 	public function __get($key) {
-		return $this->registry->get($key);
+		return Registry::get($key);
 	}
 	
 	public function __set($key, $value) {
-		$this->registry->set($key, $value);
+		Registry::set($key, $value);
 	}
 			
 	protected function forward($route, $args = array()) {
@@ -24,7 +19,7 @@ abstract class Controller {
 	}
 
 	protected function redirect($url) {
-		header('Location: ' . $url);
+		header('Location: ' . str_replace('&amp;', '&', $url));
 		exit();
 	}
 	
@@ -36,7 +31,7 @@ abstract class Controller {
 			if (file_exists($file)) {
 				require_once($file);
 
-				$controller = new $class($this->registry);
+				$controller = new $class();
 				
 				$controller->index();
 				

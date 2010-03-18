@@ -8,13 +8,13 @@ class ControllerExtensionFeed extends Controller {
   		$this->document->breadcrumbs = array();
 
    		$this->document->breadcrumbs[] = array(
-       		'href'      => HTTPS_SERVER . 'index.php?route=common/home',
+       		'href'      => $this->url->https('common/home'),
        		'text'      => $this->language->get('text_home'),
       		'separator' => FALSE
    		);
 
    		$this->document->breadcrumbs[] = array(
-       		'href'      => HTTPS_SERVER . 'index.php?route=extension/feed',
+       		'href'      => $this->url->https('extension/feed'),
        		'text'      => $this->language->get('heading_title'),
       		'separator' => ' :: '
    		);
@@ -62,17 +62,17 @@ class ControllerExtensionFeed extends Controller {
 				if (!in_array($extension, $extensions)) {
 					$action[] = array(
 						'text' => $this->language->get('text_install'),
-						'href' => HTTPS_SERVER . 'index.php?route=extension/feed/install&extension=' . $extension
+						'href' => $this->url->https('extension/feed/install&extension=' . $extension)
 					);
 				} else {
 					$action[] = array(
 						'text' => $this->language->get('text_edit'),
-						'href' => HTTPS_SERVER . 'index.php?route=feed/' . $extension
+						'href' => $this->url->https('feed/' . $extension)
 					);
 							
 					$action[] = array(
 						'text' => $this->language->get('text_uninstall'),
-						'href' => HTTPS_SERVER . 'index.php?route=extension/feed/uninstall&extension=' . $extension
+						'href' => $this->url->https('extension/feed/uninstall&extension=' . $extension)
 					);
 				}
 									
@@ -97,7 +97,7 @@ class ControllerExtensionFeed extends Controller {
     	if (!$this->user->hasPermission('modify', 'extension/feed')) {
       		$this->session['error'] = $this->language->get('error_permission'); 
 			
-			$this->redirect(HTTPS_SERVER . 'index.php?route=extension/feed');
+			$this->redirect($this->url->https('extension/feed'));
     	} else {
 			$this->load->model('setting/extension');
 		
@@ -108,7 +108,7 @@ class ControllerExtensionFeed extends Controller {
 			$this->model_user_user_group->addPermission($this->user->getId(), 'access', 'feed/' . $this->request->get['extension']);
 			$this->model_user_user_group->addPermission($this->user->getId(), 'modify', 'feed/' . $this->request->get['extension']);
 		
-			$this->redirect(HTTPS_SERVER . 'index.php?route=extension/feed');			
+			$this->redirect($this->url->https('extension/feed'));			
 		}
 	}
 	
@@ -116,7 +116,7 @@ class ControllerExtensionFeed extends Controller {
     	if (!$this->user->hasPermission('modify', 'extension/feed')) {
       		$this->session['error'] = $this->language->get('error_permission'); 
 			
-			$this->redirect(HTTPS_SERVER . 'index.php?route=extension/feed');
+			$this->redirect($this->url->https('extension/feed'));
     	} else {		
 			$this->load->model('setting/extension');
 			$this->load->model('setting/setting');
@@ -125,7 +125,7 @@ class ControllerExtensionFeed extends Controller {
 		
 			$this->model_setting_setting->deleteSetting($this->request->get['extension']);
 		
-			$this->redirect(HTTPS_SERVER . 'index.php?route=extension/feed');
+			$this->redirect($this->url->https('extension/feed'));
 		}
 	}
 }

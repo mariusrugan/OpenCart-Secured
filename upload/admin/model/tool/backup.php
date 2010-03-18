@@ -10,24 +10,14 @@ class ModelToolBackup extends Model {
   		}
 	}
 	
-	public function getTables() {
-		$table_data = array();
-		
-		$query = $this->db->query("SHOW TABLES FROM `" . DB_DATABASE . "`");
-		
-		foreach ($query->rows as $result) {
-			$table_data[] = $result['Tables_in_' . DB_DATABASE];
-		}
-		
-		return $table_data;
-	}
-	
-	public function backup($tables) {
+	public function backup() {
 		$output = '';
+		
+		$table_query = $this->db->query("SHOW TABLES FROM `" . DB_DATABASE . "`");
 
-		foreach ($tables as $table) {
+		foreach ($table_query->rows as $table) {
 			if (DB_PREFIX) {
-				if (strpos($table, DB_PREFIX) === FALSE) {
+				if (strpos($table['Tables_in_' . DB_DATABASE], DB_PREFIX) === FALSE) {
 					$status = FALSE;
 				} else {
 					$status = TRUE;
@@ -37,9 +27,9 @@ class ModelToolBackup extends Model {
 			}
 			
 			if ($status) {
-				$output .= 'TRUNCATE TABLE `' . $table . '`;' . "\n\n";
+				$output .= 'TRUNCATE TABLE `' . $table['Tables_in_' . DB_DATABASE] . '`;' . "\n\n";
 			
-				$query = $this->db->query("SELECT * FROM `" . $table . "`");
+				$query = $this->db->query("SELECT * FROM `" . $table['Tables_in_' . DB_DATABASE] . "`");
 				
 				foreach ($query->rows as $result) {
 					$fields = '';
@@ -62,7 +52,7 @@ class ModelToolBackup extends Model {
 						$values .= '\'' . $value . '\', ';
 					}
 					
-					$output .= 'INSERT INTO `' . $table . '` (' . preg_replace('/, $/', '', $fields) . ') VALUES (' . preg_replace('/, $/', '', $values) . ');' . "\n";
+					$output .= 'INSERT INTO `' . $table['Tables_in_' . DB_DATABASE] . '` (' . preg_replace('/, $/', '', $fields) . ') VALUES (' . preg_replace('/, $/', '', $values) . ');' . "\n";
 				}
 				
 				$output .= "\n\n";

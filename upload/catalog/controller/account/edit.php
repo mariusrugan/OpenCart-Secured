@@ -4,9 +4,9 @@ class ControllerAccountEdit extends Controller {
 
 	public function index() {
 		if (!$this->customer->isLogged()) {
-			$this->session->data['redirect'] = HTTPS_SERVER . 'index.php?route=account/edit';
+			$this->session->data['redirect'] = $this->url->https('account/edit');
 
-			$this->redirect(HTTPS_SERVER . 'index.php?route=account/login');
+			$this->redirect($this->url->https('account/login'));
 		}
 
 		$this->language->load('account/edit');
@@ -20,25 +20,25 @@ class ControllerAccountEdit extends Controller {
 			
 			$this->session->data['success'] = $this->language->get('text_success');
 
-			$this->redirect(HTTPS_SERVER . 'index.php?route=account/account');
+			$this->redirect($this->url->https('account/account'));
 		}
 
       	$this->document->breadcrumbs = array();
 
       	$this->document->breadcrumbs[] = array(
-        	'href'      => HTTP_SERVER . 'index.php?route=common/home',
+        	'href'      => $this->url->http('common/home'),
         	'text'      => $this->language->get('text_home'),
         	'separator' => FALSE
       	); 
 
       	$this->document->breadcrumbs[] = array(
-        	'href'      => HTTP_SERVER . 'index.php?route=account/account',
+        	'href'      => $this->url->http('account/account'),
         	'text'      => $this->language->get('text_account'),
         	'separator' => $this->language->get('text_separator')
       	);
 
       	$this->document->breadcrumbs[] = array(
-        	'href'      => HTTP_SERVER . 'index.php?route=account/edit',
+        	'href'      => $this->url->http('account/edit'),
         	'text'      => $this->language->get('text_edit'),
         	'separator' => $this->language->get('text_separator')
       	);
@@ -86,7 +86,7 @@ class ControllerAccountEdit extends Controller {
 			$this->data['error_telephone'] = '';
 		}	
 
-		$this->data['action'] = HTTPS_SERVER . 'index.php?route=account/edit';
+		$this->data['action'] = $this->url->https('account/edit');
 
 		if ($this->request->server['REQUEST_METHOD'] != 'POST') {
 			$customer_info = $this->model_account_customer->getCustomer($this->customer->getId());
@@ -132,7 +132,7 @@ class ControllerAccountEdit extends Controller {
 			$this->data['fax'] = '';
 		}
 
-		$this->data['back'] = HTTPS_SERVER . 'index.php?route=account/account';
+		$this->data['back'] = $this->url->https('account/account');
 		
 		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/account/edit.tpl')) {
 			$this->template = $this->config->get('config_template') . '/template/account/edit.tpl';

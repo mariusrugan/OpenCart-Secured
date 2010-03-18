@@ -38,11 +38,7 @@ class ModelSaleCustomer extends Model {
 		
 		if (isset($data['filter_status']) && !is_null($data['filter_status'])) {
 			$implode[] = "status = '" . (int)$data['filter_status'] . "'";
-		}	
-		
-		if (isset($data['filter_approved']) && !is_null($data['filter_approved'])) {
-			$implode[] = "approved = '" . (int)$data['filter_approved'] . "'";
-		}		
+		}			
 		
 		if (isset($data['filter_date_added']) && !is_null($data['filter_date_added'])) {
 			$implode[] = "DATE(date_added) = DATE('" . $this->db->escape($data['filter_date_added']) . "')";
@@ -88,8 +84,8 @@ class ModelSaleCustomer extends Model {
 		return $query->rows;	
 	}
 	
-	public function approve($customer_id) {
-		$this->db->query("UPDATE " . DB_PREFIX . "customer SET approved = '1' WHERE customer_id = '" . (int)$customer_id . "'");
+	public function activate($customer_id) {
+		$this->db->query("UPDATE " . DB_PREFIX . "customer SET status = '1' WHERE customer_id = '" . (int)$customer_id . "'");
 	}
 	
 	public function getCustomersByNewsletter() {
@@ -100,17 +96,12 @@ class ModelSaleCustomer extends Model {
 	
 	public function getCustomersByKeyword($keyword) {
 		if ($keyword) {
-			$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "customer WHERE LCASE(CONCAT(firstname, ' ', lastname)) LIKE '%" . $this->db->escape(strtolower($keyword)) . "%' ORDER BY firstname, lastname, email");
+			$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "customer WHERE CONCAT(firstname, ' ', lastname) LIKE '%" . $this->db->escape($keyword) . "%' ORDER BY firstname, lastname, email");
 	
 			return $query->rows;
 		} else {
 			return array();	
 		}
-	}
-	public function getAddresses($keyword) {
-		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "address WHERE customer_id = '" . (int)$customer_id . "'");
-	
-		return $query->rows;
 	}
 	
 	public function getTotalCustomers($data = array()) {
@@ -167,7 +158,7 @@ class ModelSaleCustomer extends Model {
 		return $query->row['total'];
 	}
 	
-	public function getTotalCustomersByCustomerGroupId($customer_group_id) {
+	public function getTotalCustomersByGroupId($customer_group_id) {
 		$query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "customer WHERE customer_group_id = '" . (int)$customer_group_id . "'");
 		
 		return $query->row['total'];

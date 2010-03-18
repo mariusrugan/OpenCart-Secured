@@ -14,7 +14,7 @@ class ControllerTotalCoupon extends Controller {
 		
 			$this->session->data['success'] = $this->language->get('text_success');
 			
-			$this->redirect(HTTPS_SERVER . 'index.php?route=extension/total');
+			$this->redirect($this->url->https('extension/total'));
 		}
 		
 		$this->data['heading_title'] = $this->language->get('heading_title');
@@ -39,26 +39,26 @@ class ControllerTotalCoupon extends Controller {
    		$this->document->breadcrumbs = array();
 
    		$this->document->breadcrumbs[] = array(
-       		'href'      => HTTPS_SERVER . 'index.php?route=common/home',
+       		'href'      => $this->url->https('common/home'),
        		'text'      => $this->language->get('text_home'),
       		'separator' => FALSE
    		);
 
    		$this->document->breadcrumbs[] = array(
-       		'href'      => HTTPS_SERVER . 'index.php?route=extension/total',
+       		'href'      => $this->url->https('extension/total'),
        		'text'      => $this->language->get('text_total'),
       		'separator' => ' :: '
    		);
 		
    		$this->document->breadcrumbs[] = array(
-       		'href'      => HTTPS_SERVER . 'index.php?route=total/coupon',
+       		'href'      => $this->url->https('total/coupon'),
        		'text'      => $this->language->get('heading_title'),
       		'separator' => ' :: '
    		);
 		
-		$this->data['action'] = HTTPS_SERVER . 'index.php?route=total/coupon';
+		$this->data['action'] = $this->url->https('total/coupon');
 		
-		$this->data['cancel'] = HTTPS_SERVER . 'index.php?route=extension/total';
+		$this->data['cancel'] = $this->url->https('extension/total');
 
 		if (isset($this->request->post['coupon_status'])) {
 			$this->data['coupon_status'] = $this->request->post['coupon_status'];
