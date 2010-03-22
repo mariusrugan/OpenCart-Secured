@@ -4,12 +4,13 @@ final class User {
 	private $username;
   	private $permission = array();
 
-  	public function __construct() {
-		$this->db = Registry::get('db');
-		$this->request = Registry::get('request');
-		$this->session = Registry::get('session');
-
+  	public function __construct($registry) {
+		$this->db = $registry->get('db');
+		$this->request = $registry->get('request');
+		$this->session = $registry->get('session');
+		
     	if (isset($this->session->data['user_id']) && isset($this->request->get['token']) && $this->request->get['token'] == $this->session->data['authToken'] ) {
+		
 			$user_query = $this->db->query("SELECT * FROM " . DB_PREFIX . "user WHERE user_id = '" . (int)$this->session->data['user_id'] . "'");
 
 			if ($user_query->num_rows) {

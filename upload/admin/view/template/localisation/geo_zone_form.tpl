@@ -28,7 +28,7 @@
         </tr>
       </table>
       <br />
-      <table class="list">
+      <table id="zone_to_geo_zone" class="list">
         <thead>
           <tr>
             <td class="left"><?php echo $entry_country; ?></td>
@@ -56,18 +56,12 @@
         </tbody>
         <?php $zone_to_geo_zone_row++; ?>
         <?php } ?>
-        <tbody id="zone_to_geo_zone">
-          <tr class="filter">
-            <td class="left"><select id="country_id" onchange="$('#zone_id').load('index.php?route=localisation/geo_zone/zone&country_id=' + this.value + '&zone_id=0');">
-                <?php foreach ($countries as $country) { ?>
-                <option value="<?php echo $country['country_id']; ?>"><?php echo $country['name']; ?></option>
-                <?php } ?>
-              </select></td>
-            <td class="left"><select id="zone_id">
-              </select></td>
+        <tfoot>
+          <tr>
+            <td colspan="2"></td>
             <td class="left"><a onclick="addGeoZone();" class="button"><span><?php echo $button_add_geo_zone; ?></span></a></td>
           </tr>
-        </tbody>        
+        </tfoot>
       </table>
     </form>
   </div>
@@ -107,6 +101,9 @@ function addGeoZone() {
 	$('#country_id option').attr('selected', '');
 	
 	$('#zone_id').load('index.php?token=<?php echo $this->request->get['token']; ?>&route=localisation/geo_zone/zone&country_id=' + $('#country_id').attr('value') + '&zone_id=0');
+
+	$('#zone_to_geo_zone > tfoot').before(html);
+		
 	
 	zone_to_geo_zone_row++;
 }

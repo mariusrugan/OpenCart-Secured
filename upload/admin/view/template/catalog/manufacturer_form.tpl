@@ -20,6 +20,24 @@
             <?php } ?></td>
         </tr>
         <tr>
+          <td><?php echo $entry_store; ?></td>
+          <td><div class="scrollbox">
+              <?php $class = 'odd'; ?>
+              <?php foreach ($stores as $store) { ?>
+              <?php $class = ($class == 'even' ? 'odd' : 'even'); ?>
+              <div class="<?php echo $class; ?>">
+                <?php if (in_array($store['store_id'], $manufacturer_store)) { ?>
+                <input type="checkbox" name="manufacturer_store[]" value="<?php echo $store['store_id']; ?>" checked="checked" />
+                <?php echo $store['name']; ?>
+                <?php } else { ?>
+                <input type="checkbox" name="manufacturer_store[]" value="<?php echo $store['store_id']; ?>" />
+                <?php echo $store['name']; ?>
+                <?php } ?>
+              </div>
+              <?php } ?>
+            </div></td>
+        </tr>
+        <tr>
           <td><?php echo $entry_keyword; ?></td>
           <td><input type="text" name="keyword" value="<?php echo $keyword; ?>" /></td>
         </tr>
@@ -44,14 +62,14 @@
 function image_upload(field, preview) {
 	$('#dialog').remove();
 	
-	$('#content').prepend('<div id="dialog" style="padding: 3px 0px 0px 0px;"><iframe src="index.php?token=<?php echo $this->request->get['token']; ?>&route=common/filemanager&field=' + encodeURIComponent(field) + '" style="padding:0; margin: 0; display: block; width: 100%; height: 100%;" frameborder="no" scrolling="auto"></iframe></div>');
-
+	$('#content').prepend('<div id="dialog" style="padding: 3px 0px 0px 0px;"><iframe src="index.php?<?php echo $this->request->get['token']; ?>&route=common/filemanager&field=' + encodeURIComponent(field) + '" style="padding:0; margin: 0; display: block; width: 100%; height: 100%;" frameborder="no" scrolling="auto"></iframe></div>');
+	
 	$('#dialog').dialog({
 		title: '<?php echo $text_image_manager; ?>',
 		close: function (event, ui) {
 			if ($('#' + field).attr('value')) {
 				$.ajax({
-					url: 'index.php?token=<?php echo $this->request->get['token']; ?>&route=common/filemanager/image',
+					url: 'index.php?<?php echo $this->request->get['token']; ?>&route=common/filemanager/image',
 					type: 'POST',
 					data: 'image=' + encodeURIComponent($('#' + field).val()),
 					dataType: 'text',
