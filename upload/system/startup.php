@@ -43,9 +43,30 @@ if (ini_get('magic_quotes_gpc')) {
 	$_COOKIE = clean($_COOKIE);
 }
 
-// Set default time zone if not set in php.ini
 if (!ini_get('date.timezone')) {
-	date_default_timezone_set(date('e', $_SERVER['REQUEST_TIME']));
+	date_default_timezone_set('UTC');
+}
+
+
+// Windows IIS Compatibility  
+if (!isset($_SERVER['DOCUMENT_ROOT'])) { 
+	if (isset($_SERVER['SCRIPT_FILENAME'])) {
+		$_SERVER['DOCUMENT_ROOT'] = str_replace('\\', '/', substr($_SERVER['SCRIPT_FILENAME'], 0, 0 - strlen($_SERVER['PHP_SELF'])));
+	}
+}
+
+if (!isset($_SERVER['DOCUMENT_ROOT'])) {
+	if (isset($_SERVER['PATH_TRANSLATED'])) {
+		$_SERVER['DOCUMENT_ROOT'] = str_replace('\\', '/', substr(str_replace('\\\\', '\\', $_SERVER['PATH_TRANSLATED']), 0, 0 - strlen($_SERVER['PHP_SELF'])));
+	}
+}
+
+if (!isset($_SERVER['REQUEST_URI'])) { 
+	$_SERVER['REQUEST_URI'] = substr($_SERVER['PHP_SELF'], 1); 
+	
+	if (isset($_SERVER['QUERY_STRING'])) { 
+		$_SERVER['REQUEST_URI'] .= '?' . $_SERVER['QUERY_STRING']; 
+	} 
 }
 
 // Engine
@@ -55,7 +76,6 @@ require_once(DIR_SYSTEM . 'engine/front.php');
 require_once(DIR_SYSTEM . 'engine/loader.php'); 
 require_once(DIR_SYSTEM . 'engine/model.php');
 require_once(DIR_SYSTEM . 'engine/registry.php');
-require_once(DIR_SYSTEM . 'engine/url.php');
 
 // Common
 require_once(DIR_SYSTEM . 'library/cache.php');
@@ -64,7 +84,7 @@ require_once(DIR_SYSTEM . 'library/db.php');
 require_once(DIR_SYSTEM . 'library/document.php');
 require_once(DIR_SYSTEM . 'library/image.php');
 require_once(DIR_SYSTEM . 'library/language.php');
-require_once(DIR_SYSTEM . 'library/logger.php');
+require_once(DIR_SYSTEM . 'library/log.php');
 require_once(DIR_SYSTEM . 'library/mail.php');
 require_once(DIR_SYSTEM . 'library/pagination.php');
 require_once(DIR_SYSTEM . 'library/request.php');
